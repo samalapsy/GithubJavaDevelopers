@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorMilk"
+    android:orientation="vertical"
+    tools:context="com.samalapsy.githubjavadevelopers.ProfileView">
+
+    <view
+        android:id="@+id/view"
+        class="android.support.v4.widget.Space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topspace" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin20"
+        android:background="#fff"
+        android:elevation="@dimen/elevation"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin60"
+            android:orientation="vertical">
+
+            <!--<ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_share"
+                android:tint="#000000"
+                app:layout_anchor="@id/container"
+                app:layout_anchorGravity="bottom|end" />-->
+
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="@color/colorAccent"
+                android:hint="\@samalapsy"
+                android:padding="@dimen/padding10"
+                tools:targetApi="m" />
+
+            <view
+                android:id="@+id/view1"
+                class="android.support.v4.widget.Space"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mdspace" />
+
+            <TextView
+                android:id="@+id/user_profile_link"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="@color/colorAccent"
+                android:hint="https://github.com/samalapsy"
+                android:padding="@dimen/padding10"
+                tools:targetApi="m" />
+
+            <view
+                android:id="@+id/view2"
+                class="android.support.v4.widget.Space"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mdspace" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="false"
+        android:clipChildren="false"
+        android:elevation="@dimen/elevation"
+        android:src="@drawable/profile" />
+
+
+</RelativeLayout>
