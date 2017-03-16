@@ -1,13 +1,18 @@
 package com.samalapsy.githubjavadevelopers;
 
 
-public class UserModel {
+import java.io.Serializable;
+
+public class UserModel implements Serializable {
     String username, profile_link, image;
 
-    public UserModel(String username, String image) {
+    private static final long serialVersionUID = 1L;
+
+    public UserModel(String username, String image, String profile_link) {
         super();
         this.username = username;
         this.image = image;
+        this.profile_link = profile_link;
     }
 
     public String getUsername() {
