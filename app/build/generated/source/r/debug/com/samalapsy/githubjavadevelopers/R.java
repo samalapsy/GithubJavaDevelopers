@@ -2902,6 +2902,7 @@ containing a value of this type.
         public static final int auto=0x7f0c0021;
         public static final int beginning=0x7f0c0034;
         public static final int bottom=0x7f0c0022;
+        public static final int btnShare=0x7f0c0093;
         public static final int buttonPanel=0x7f0c004e;
         public static final int cancel_action=0x7f0c0086;
         public static final int card_view=0x7f0c0080;
@@ -2964,12 +2965,12 @@ containing a value of this type.
         public static final int parallax=0x7f0c002c;
         public static final int parentPanel=0x7f0c0050;
         public static final int pin=0x7f0c002d;
-        public static final int progressBar1=0x7f0c009b;
+        public static final int progressBar1=0x7f0c009c;
         public static final int progress_circular=0x7f0c0006;
         public static final int progress_horizontal=0x7f0c0007;
         public static final int radio=0x7f0c005e;
         public static final int recycler=0x7f0c0075;
-        public static final int relativeLayout=0x7f0c0093;
+        public static final int relativeLayout=0x7f0c0092;
         public static final int right=0x7f0c0029;
         public static final int screen=0x7f0c001c;
         public static final int scroll=0x7f0c0018;
@@ -3024,7 +3025,7 @@ containing a value of this type.
         public static final int user_image=0x7f0c0082;
         public static final int user_profile_link=0x7f0c0099;
         public static final int username=0x7f0c0083;
-        public static final int view=0x7f0c0092;
+        public static final int view=0x7f0c009b;
         public static final int view1=0x7f0c0097;
         public static final int view2=0x7f0c009a;
         public static final int view3=0x7f0c0094;

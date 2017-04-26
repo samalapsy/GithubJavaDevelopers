@@ -124,7 +124,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gridlist_item, parent, false);
                 //.inflate(R.layout.gridlist_item, null);
-        Log.e("View Type", "GridList View");
+        //Log.e("View Type", "GridList View");
         return new UserViewHolder(itemView);
 
        /* if (viewType == VIEW_ITEM) {

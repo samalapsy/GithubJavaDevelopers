@@ -160,7 +160,7 @@ public class DevelopersList extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.e("Where are you","LoadData Network");
+                //Log.e("Where are you","LoadData Network");
                 AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users")
                         .setTag("test")
                         .setPriority(Priority.HIGH)

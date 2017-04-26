@@ -19,6 +19,7 @@ public class ProfileView extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.user_image);
         TextView usernameView = (TextView) findViewById(R.id.username);
         TextView user_profile_linkView = (TextView) findViewById(R.id.user_profile_link);
+        ImageView btnShare = (ImageView) findViewById(R.id.btnShare);
 
         // Get Bundles Extras
         Bundle b = getIntent().getExtras();
@@ -36,7 +37,6 @@ public class ProfileView extends AppCompatActivity {
         // Parse Uri to string
         final String profile_url = String.valueOf(Uri.parse(b.getString("url")));
 
-
         // Set Onclick for the Github Profile link and Open in Browser
         user_profile_linkView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +47,18 @@ public class ProfileView extends AppCompatActivity {
             }
         });
 
+        final String shareText = "Check out this awesome developer @" + usernameText+ ", " + url;
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
 
     }
 }
