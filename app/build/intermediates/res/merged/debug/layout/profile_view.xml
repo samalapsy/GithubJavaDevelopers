@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorMilk"
     android:orientation="vertical"
     tools:context="com.samalapsy.githubjavadevelopers.ProfileView">
@@ -13,7 +12,7 @@
         android:id="@+id/view"
         class="android.support.v4.widget.Space"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/topspace" />
+        android:layout_height="@dimen/margin80" />
 
 
     <RelativeLayout
@@ -28,14 +27,20 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <view
+            android:id="@+id/view3"
+            class="android.support.v4.widget.Space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin80" />
+
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin60"
+            android:layout_below="@+id/view3"
             android:orientation="vertical">
 
-            <!--<ImageButton
+           <!-- <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_share"
@@ -45,11 +50,24 @@
 
 
             <TextView
+                android:id="@+id/txtUsername"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableTint="@color/colorAccent"
+                android:paddingEnd="@dimen/padding0"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding0"
+                android:paddingStart="@dimen/padding10"
+                android:paddingTop="@dimen/padding10"
+                android:text="@string/usernameHeading"
+                tools:targetApi="m" />
+
+            <TextView
                 android:id="@+id/username"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:drawableTint="@color/colorAccent"
-                android:hint="\@samalapsy"
+                android:hint="@string/usernameHint"
                 android:padding="@dimen/padding10"
                 tools:targetApi="m" />
 
@@ -60,11 +78,27 @@
                 android:layout_height="@dimen/mdspace" />
 
             <TextView
-                android:id="@+id/user_profile_link"
+                android:id="@+id/txtProfileLink"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:drawableTint="@color/colorAccent"
-                android:hint="https://github.com/samalapsy"
+                android:paddingEnd="@dimen/padding0"
+                android:paddingLeft="@dimen/padding10"
+                android:paddingRight="@dimen/padding0"
+                android:paddingStart="@dimen/padding10"
+                android:paddingTop="@dimen/padding10"
+                android:text="@string/urlHeading"
+                tools:targetApi="m" />
+
+            <TextView
+                android:id="@+id/user_profile_link"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:clickable="true"
+                android:drawableTint="@color/colorAccent"
+                android:hint="@string/profile_linkHint"
+                android:linksClickable="true"
                 android:padding="@dimen/padding10"
                 tools:targetApi="m" />
 
@@ -82,13 +116,13 @@
         android:id="@+id/user_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="29dp"
         android:adjustViewBounds="false"
         android:clipChildren="false"
         android:elevation="@dimen/elevation"
-        android:src="@drawable/profile" />
+        android:src="@drawable/profile"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

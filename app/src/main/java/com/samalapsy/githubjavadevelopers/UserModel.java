@@ -4,15 +4,15 @@ package com.samalapsy.githubjavadevelopers;
 import java.io.Serializable;
 
 public class UserModel implements Serializable {
-    String username, profile_link, image;
+    String username, avatar, image;
 
     private static final long serialVersionUID = 1L;
 
-    public UserModel(String username, String image, String profile_link) {
+    public UserModel(String username, String image, String avatar) {
         super();
         this.username = username;
         this.image = image;
-        this.profile_link = profile_link;
+        this.avatar = avatar;
     }
 
     public String getUsername() {
@@ -23,12 +23,12 @@ public class UserModel implements Serializable {
         this.username = username;
     }
 
-    public String getProfile_link() {
-        return profile_link;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setProfile_link(String profile_link) {
-        this.profile_link = profile_link;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getImage() {

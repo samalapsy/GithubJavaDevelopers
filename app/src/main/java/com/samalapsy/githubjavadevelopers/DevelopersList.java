@@ -51,6 +51,7 @@ public class DevelopersList extends AppCompatActivity {
         username = (TextView) findViewById(R.id.username);
         mainLayout = (RelativeLayout) findViewById(R.id.activity_developers_list);
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler.setLayoutManager(new GridLayoutManager(DevelopersList.this, 2));
         //recycler.setVisibility(View.VISIBLE);
 
 
@@ -75,17 +76,14 @@ public class DevelopersList extends AppCompatActivity {
             snackbar.show();
 
         } else {
-
-
             //Load Data from Network
             loadData();
 
-            if (userList.isEmpty()) {
+            /*if (userList.isEmpty()) {
                 recycler.setVisibility(View.GONE);
                 Log.e("Where are you","List is Empty");
             } else {
                 Log.e("Where are you","List Is Not Empty");
-
 
                 mAdapter.setOnLoadMoreListener(new UserListAdapter.OnLoadMoreListener() {
                     @Override
@@ -150,7 +148,7 @@ public class DevelopersList extends AppCompatActivity {
 
                     }
                 });
-            }
+            }*/
         }
     }
 
@@ -176,24 +174,23 @@ public class DevelopersList extends AppCompatActivity {
 
                                     //Loop through the User List
                                     //for (int i = 0; i < array.length(); i++) {
-                                    for (int i = 0; i < 14; i++) {
+                                    for (int i = 0; i < 20; i++) {
                                         JSONObject obj = array.getJSONObject(i);
 
                                         //add to Model
                                         userModel = new UserModel(obj.getString("login"),
                                                 obj.getString("avatar_url"), obj.getString("html_url"));
                                         userList.add(userModel);
+
                                     }
 
                                     //pd.dismiss();
-                                    Log.e("New size","Added " + userList.size());
+                                    //Log.e("New size","Added " + userList.size());
 
                                     recycler.setHasFixedSize(true);
                                     //recycler.setLayoutManager(new GridLayoutManager(DevelopersList.this, 2));
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DevelopersList.this);
-                                    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                                    recycler.setLayoutManager(linearLayoutManager);
-                                    mAdapter = new UserListAdapter(DevelopersList.this ,userList, recycler);
+                                    //mAdapter = new UserListAdapter(DevelopersList.this ,userList, recycler);
+                                    mAdapter = new UserListAdapter(DevelopersList.this ,userList);
                                     recycler.setAdapter(mAdapter);
                                     pd.hide();
 
@@ -210,7 +207,6 @@ public class DevelopersList extends AppCompatActivity {
             }
         });
 
-        //Log.e("UserLis Size", String.valueOf(userList.size()));
 
     }
 

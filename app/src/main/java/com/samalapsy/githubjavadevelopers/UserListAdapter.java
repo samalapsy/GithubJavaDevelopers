@@ -3,6 +3,7 @@ package com.samalapsy.githubjavadevelopers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +33,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
     private OnLoadMoreListener onLoadMoreListener;
 
-    UserListAdapter(Context c, List<UserModel> list, RecyclerView view) {
+    //UserListAdapter(Context c, List<UserModel> list, RecyclerView view) {
+    UserListAdapter(Context c, List<UserModel> list) {
         this.mContext = c;
         this.mlist = list;
 
@@ -121,6 +123,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         UserViewHolder vh = null;
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gridlist_item, parent, false);
+                //.inflate(R.layout.gridlist_item, null);
         Log.e("View Type", "GridList View");
         return new UserViewHolder(itemView);
 
@@ -145,7 +148,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         if (holder != null) {
             //UserModel user = (UserModel) mlist.get(position);
             final UserModel user = mlist.get(position);
-            ((UserViewHolder) holder).username.setText(user.getUsername());
+            holder.username.setText(user.getUsername());
 
             Glide.with(mContext)
                     .load(user.getImage())
@@ -155,7 +158,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             holder.itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+                    Intent profileIntent = new Intent(mContext, ProfileView.class);
+                    Bundle b = new Bundle();
+                    b.putString("username", user.getUsername());
+                    b.putString("avatar", user.getImage());
+                    b.putString("url", user.getAvatar());
+                    profileIntent.putExtras(b);
+                    mContext.startActivity(profileIntent);
+                    //Toast.makeText(v.getContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -168,7 +179,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome developer @" +
-                            user.getUsername() + ", " + user.getProfile_link());
+                            user.getUsername() + ", " + user.getAvatar());
                     sendIntent.setType("text/plain");
                     mContext.startActivity(sendIntent);
                 }
@@ -193,7 +204,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         return mlist.size();
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder {
+    class UserViewHolder extends RecyclerView.ViewHolder {
         ImageView user_image, btnShare;
         RelativeLayout itemLayout;
         TextView username;

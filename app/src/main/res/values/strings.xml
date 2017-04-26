@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GithubJavaDevelopers</string>
+    <string name="usernameHint">\@samalapsy</string>
+    <string name="profile_linkHint">https://github.com/samalapsy</string>
+    <string name="urlHeading">Github Profile Link</string>
+    <string name="usernameHeading">Github Username</string>
 </resources>
