@@ -4,8 +4,10 @@ import com.androidnetworking.AndroidNetworking;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +43,9 @@ public class DevelopersList extends AppCompatActivity {
     UserModel userModel;
     RelativeLayout mainLayout;
     Snackbar snackbar;
+    int page = 1;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,13 @@ public class DevelopersList extends AppCompatActivity {
         recycler.setLayoutManager(new GridLayoutManager(DevelopersList.this, 2));
         //recycler.setVisibility(View.VISIBLE);
 
+        //Use SharedPreference to hold Current Page for the API
+        prefs = this.getSharedPreferences(
+                "com.samalapsy.githubjavadevelopers", Context.MODE_PRIVATE);
+        editor = getSharedPreferences("com.samalapsy.githubjavadevelopers", MODE_PRIVATE).edit();
+        editor.putInt("page", 1);
+        editor.commit();
+
 
         //Check for internet Connection
 
@@ -66,6 +78,7 @@ public class DevelopersList extends AppCompatActivity {
 
                         }
                     });
+
             // Changing message text color
             snackbar.setActionTextColor(Color.RED);
 
@@ -79,76 +92,76 @@ public class DevelopersList extends AppCompatActivity {
             //Load Data from Network
             loadData();
 
-            /*if (userList.isEmpty()) {
-                recycler.setVisibility(View.GONE);
-                Log.e("Where are you","List is Empty");
-            } else {
-                Log.e("Where are you","List Is Not Empty");
+            mAdapter = new UserListAdapter(DevelopersList.this, userList, recycler);
+            recycler.setAdapter(mAdapter);
 
-                mAdapter.setOnLoadMoreListener(new UserListAdapter.OnLoadMoreListener() {
-                    @Override
-                    public void onLoadMore() {
-                        Log.e("Where are you","On Load More Now");
-                        userList.add(null);
-                        // Remove progress item
-                        mAdapter.notifyItemRemoved(userList.size());
+            mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    Log.e("Where are you", "On Load More Now");
+                    userList.add(null);
+                    // Remove progress item
+                    mAdapter.notifyItemRemoved(userList.size());
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            userList.remove(userList.size() - 1);
+                            mAdapter.notifyItemRemoved(userList.size());
+
+                            int start = userList.size();
+                            final int end = start + 20;
+                            final int nextpage = prefs.getInt("page", page++) + 1;
+
+                            Log.e("Where are you", "OnLoad Network page=" + nextpage);
 
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                            AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users&page=" + nextpage + "&per_page=40")
+                                    .setTag("test")
+                                    .setPriority(Priority.LOW)
+                                    .build()
+                                    .getAsJSONObject(new JSONObjectRequestListener() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
 
-                                userList.remove(userList.size() - 1);
-                                mAdapter.notifyItemRemoved(userList.size());
+                                            try {
+                                                //Get the result from items Object
+                                                JSONArray array = response.getJSONArray("items");
 
-                                int start = userList.size();
-                                final int end = start + 14;
+                                                //Loop through the User List
+                                                for (int i = 0; i <= array.length(); i++) {
+                                                    JSONObject obj = array.getJSONObject(i);
 
-                                Log.e("Where are you","OnLoad Network");
+                                                    //add to Model
+                                                    userModel = new UserModel(obj.getString("login"),
+                                                            obj.getString("avatar_url"), obj.getString("html_url"));
 
-                                AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users")
-                                        .setTag("test")
-                                        .setPriority(Priority.LOW)
-                                        .build()
-                                        .getAsJSONObject(new JSONObjectRequestListener() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
+                                                    userList.add(userModel);
 
-                                                try {
-                                                    //Get the result from items Object
-                                                    JSONArray array = response.getJSONArray("items");
-
-                                                    //Loop through the User List
-                                                    for (int i = 0; i <= end; i++) {
-                                                        JSONObject obj = array.getJSONObject(i);
-
-                                                        //add to Model
-                                                        userModel = new UserModel(obj.getString("login"),
-                                                                obj.getString("avatar_url"), obj.getString("html_url"));
-
-                                                        userList.add(userModel);
-
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
                                                 }
 
-                                                mAdapter.notifyDataSetChanged();
-                                                //mAdapter.notifyItemInserted(userList.size());
-                                                mAdapter.setLoaded();
+                                                // Save nextPage to Preference
+
+                                                editor.putInt("page", nextpage + 1);
+                                                editor.commit();
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
 
-                                            @Override
-                                            public void onError(ANError anError) {
+                                            mAdapter.notifyDataSetChanged();
+                                            mAdapter.setLoaded();
+                                        }
 
-                                            }
-                                        });
-                            }
-                        });
+                                        @Override
+                                        public void onError(ANError anError) {
 
-                    }
-                });
-            }*/
+                                        }
+                                    });
+                        }
+                    }, 7000);
+                }
+            });
         }
     }
 
@@ -161,7 +174,8 @@ public class DevelopersList extends AppCompatActivity {
             @Override
             public void run() {
                 //Log.e("Where are you","LoadData Network");
-                AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users")
+                //AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users&page=1&per_page=40")
+                AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users&page=1&per_page=40")
                         .setTag("test")
                         .setPriority(Priority.HIGH)
                         .build()
@@ -173,8 +187,8 @@ public class DevelopersList extends AppCompatActivity {
                                     JSONArray array = response.getJSONArray("items");
 
                                     //Loop through the User List
-                                    //for (int i = 0; i < array.length(); i++) {
-                                    for (int i = 0; i < 20; i++) {
+                                    for (int i = 0; i < array.length(); i++) {
+                                        //for (int i = 0; i < 20; i++) {
                                         JSONObject obj = array.getJSONObject(i);
 
                                         //add to Model
@@ -184,19 +198,33 @@ public class DevelopersList extends AppCompatActivity {
 
                                     }
 
-                                    //pd.dismiss();
-                                    //Log.e("New size","Added " + userList.size());
+
+
+
+                                    if (!userList.isEmpty()) {
+                                        pd.hide();
+                                    }
 
                                     recycler.setHasFixedSize(true);
+                                    mAdapter = new UserListAdapter(DevelopersList.this, userList, recycler);
+                                    recycler.setAdapter(mAdapter);
+
+
+                                    //pd.dismiss();
+                                    //Log.e("New size","Added " + userList.size());
+                                    /*recycler.setHasFixedSize(true);
                                     //recycler.setLayoutManager(new GridLayoutManager(DevelopersList.this, 2));
                                     //mAdapter = new UserListAdapter(DevelopersList.this ,userList, recycler);
-                                    mAdapter = new UserListAdapter(DevelopersList.this ,userList);
+                                    mAdapter = new UserListAdapter(DevelopersList.this ,userList, recycler);
                                     recycler.setAdapter(mAdapter);
-                                    pd.hide();
+                                    pd.hide();*/
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
+                                mAdapter.notifyDataSetChanged();
+                                mAdapter.setLoaded();
                             }
 
                             @Override

@@ -4,6 +4,8 @@ package com.samalapsy.githubjavadevelopers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,33 +24,33 @@ import java.util.List;
 
 import static com.samalapsy.githubjavadevelopers.R.id.username;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
+//public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter {
 
     private final int VIEW_ITEM = 1;
     private Context mContext;
     private List<UserModel> mlist = new ArrayList<>();
-    private int visibleThreshold = 14;
+    private int visibleThreshold = 20;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
 
     private OnLoadMoreListener onLoadMoreListener;
 
-    //UserListAdapter(Context c, List<UserModel> list, RecyclerView view) {
-    UserListAdapter(Context c, List<UserModel> list) {
+    UserListAdapter(Context c, List<UserModel> list, RecyclerView recyclerView) {
+        //UserListAdapter(Context c, List<UserModel> list) {
         this.mContext = c;
         this.mlist = list;
 
-        /*if (view.getLayoutManager() instanceof LinearLayoutManager) {
-            final LinearLayoutManager layoutManager = (LinearLayoutManager) view.getLayoutManager();
-            view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+            //final LinearLayoutManager layoutManager = (LinearLayoutManager) view.getLayoutManager();
+            final GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     totalItemCount = layoutManager.getItemCount();
                     lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        // End has been reached Load
                         if (onLoadMoreListener != null) {
                             onLoadMoreListener.onLoadMore();
                         }
@@ -57,11 +59,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
                 }
             });
 
-        }*/
+        }
     }
 
-    /*@Override
-    public onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    //public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         Log.e("View Type", String.valueOf(viewType));
         if (viewType == VIEW_ITEM) {
@@ -80,11 +83,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
 
     @Override
-    public void onBindViewHolder(UserViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder != null) {
+        //if (holder != null) {
+        if (holder instanceof UserViewHolder) {
             //UserModel user = (UserModel) mlist.get(position);
-            final UserModel user =  mlist.get(position);
+            final UserModel user = mlist.get(position);
             ((UserViewHolder) holder).username.setText(user.getUsername());
 
             Glide.with(mContext)
@@ -95,7 +99,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             ((UserViewHolder) holder).itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+                    Intent profileIntent = new Intent(mContext, ProfileView.class);
+                    Bundle b = new Bundle();
+                    b.putString("username", user.getUsername());
+                    b.putString("avatar", user.getImage());
+                    b.putString("url", user.getUrl());
+                    profileIntent.putExtras(b);
+                    mContext.startActivity(profileIntent);
+                    //Toast.makeText(v.getContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -108,42 +120,45 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome developer @" +
-                            user.getUsername() + ", " + user.getProfile_link());
+                            user.getUsername() + ", " + user.getUrl());
                     sendIntent.setType("text/plain");
                     mContext.startActivity(sendIntent);
                 }
             });
 
+
         } else ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
 
-    }*/
+    }
 
-    @Override
+    /*@Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        UserViewHolder vh = null;
-        View itemView = LayoutInflater.from(parent.getContext())
+    //public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //UserViewHolder vh = null;
+        RecyclerView.ViewHolder vh = null;
+        *//*View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gridlist_item, parent, false);
                 //.inflate(R.layout.gridlist_item, null);
         //Log.e("View Type", "GridList View");
-        return new UserViewHolder(itemView);
+        return new UserViewHolder(itemView);*//*
 
-       /* if (viewType == VIEW_ITEM) {
+       if (viewType == VIEW_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.gridlist_item, parent, false);
             Log.e("View Type", "GridList View");
-            return new UserViewHolder(itemView);
-        } /*else {
+            vh = new UserViewHolder(itemView);
+        }else {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.progress_bar, parent, false);
             Log.e("View Type", "ProgressBar");
             vh = new ProgressViewHolder(itemView);
-        }*/
+        }
 
-        //return  vh;
+        return  vh;
 
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         if (holder != null) {
             //UserModel user = (UserModel) mlist.get(position);
@@ -187,14 +202,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
         }
 
-    }
+    }*/
 
-  /*  @Override
+    @Override
     public int getItemViewType(int position) {
         int VIEW_PROG = 0;
         return mlist.get(position) != null ? VIEW_ITEM : VIEW_PROG;
     }
-*/
+
     public void setLoaded() {
         loading = false;
     }
@@ -204,13 +219,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         return mlist.size();
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder {
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
         ImageView user_image, btnShare;
         RelativeLayout itemLayout;
         TextView username;
+        Context mContext;
+        UserModel user;
 
         public UserViewHolder(View view) {
             super(view);
+            mContext = view.getContext();
             user_image = (ImageView) view.findViewById(R.id.user_image);
             btnShare = (ImageView) view.findViewById(R.id.share_button);
             username = (TextView) view.findViewById(R.id.username);
@@ -220,22 +238,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     }
 
 
-    private static class ProgressViewHolder extends RecyclerView.ViewHolder {
+    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
 
-        ProgressViewHolder(View v) {
+        public ProgressViewHolder(View v) {
             super(v);
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
         }
+
     }
 
-
-    interface OnLoadMoreListener {
-        void onLoadMore();
-    }
-
-
-    void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        OnLoadMoreListener mOnLoadMoreListener1 = mOnLoadMoreListener;
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.onLoadMoreListener = mOnLoadMoreListener;
     }
 }
+
