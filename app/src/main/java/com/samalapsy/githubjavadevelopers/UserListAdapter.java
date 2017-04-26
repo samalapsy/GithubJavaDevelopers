@@ -66,16 +66,16 @@ public class UserListAdapter extends RecyclerView.Adapter {
     //public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        Log.e("View Type", String.valueOf(viewType));
+        //Log.e("View Type", String.valueOf(viewType));
         if (viewType == VIEW_ITEM) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.gridlist_item, parent, false);
-            Log.e("View Type", "GridList View");
+            //Log.e("View Type", "GridList View");
             vh = new UserViewHolder(itemView);
         } else {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.progress_bar, parent, false);
-            Log.e("View Type", "ProgressBar");
+            //Log.e("View Type", "ProgressBar");
             vh = new ProgressViewHolder(itemView);
         }
         return vh;

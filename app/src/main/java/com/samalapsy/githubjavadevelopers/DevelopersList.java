@@ -98,7 +98,7 @@ public class DevelopersList extends AppCompatActivity {
             mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
-                    Log.e("Where are you", "On Load More Now");
+                   // Log.e("Where are you", "On Load More Now");
                     userList.add(null);
                     // Remove progress item
                     mAdapter.notifyItemRemoved(userList.size());
@@ -111,9 +111,10 @@ public class DevelopersList extends AppCompatActivity {
 
                             int start = userList.size();
                             final int end = start + 20;
-                            final int nextpage = prefs.getInt("page", page++) + 1;
+                            final int cur = prefs.getInt("page", page++) + 1;
+                            final int nextpage = cur;
 
-                            Log.e("Where are you", "OnLoad Network page=" + nextpage);
+                            //Log.e("Where are you", "OnLoad Network page=" + nextpage);
 
 
                             AndroidNetworking.get("https://api.github.com/search/users?q=location:lagos+language:java&type=Users&page=" + nextpage + "&per_page=40")
@@ -142,8 +143,10 @@ public class DevelopersList extends AppCompatActivity {
 
                                                 // Save nextPage to Preference
 
-                                                editor.putInt("page", nextpage + 1);
+                                                editor.putInt("page", cur);
                                                 editor.commit();
+
+                                                //Log.e("Current Page ", "Page " + nextpage + " Loaded Now");
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
